@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Beauté Infinï - Salon Management System</title>
+    
+    <!-- Import modern fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color System */
+            --color-primary: 147, 116, 111;     /* Warm Taupe */
+            --color-secondary: 178, 151, 144;   /* Rose Taupe */
+            --color-success: 144, 161, 152;     /* Sage Green */
+            --color-danger: 196, 108, 108;      /* Muted Rose */
+            --color-warning: 199, 177, 152;     /* Warm Sand */
+            --color-gray: 128, 128, 128;        /* Neutral Gray */
+            
+            /* Background Colors */
+            --bg-gradient-start: 251, 248, 247; /* Soft Cream */
+            --bg-gradient-end: 247, 244, 243;   /* Warm White */
+            
+            /* Spacing System */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            color: rgb(17, 24, 39);
+            background: linear-gradient(
+                to bottom,
+                rgb(var(--bg-gradient-start)),
+                rgb(var(--bg-gradient-end))
+            );
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow-md);
+            border-bottom: 1px solid rgba(var(--color-primary), 0.1);
+            padding: var(--spacing-md) 0;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .header-content {
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .site-title {
+            background: linear-gradient(
+                to right,
+                rgb(var(--color-primary)),
+                rgb(var(--color-secondary))
+            );
+            -webkit-background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .site-subtitle {
+            color: rgb(var(--color-gray));
+            font-size: 1rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(var(--color-primary), 0.1);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .card-title {
+            color: rgb(var(--color-primary));
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgb(55, 65, 81);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid rgba(var(--color-primary), 0.2);
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:hover {
+            border-color: rgba(var(--color-primary), 0.4);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: rgb(var(--color-primary));
+            box-shadow: 0 0 0 3px rgba(var(--color-primary), 0.1);
+        }
+
+        /* Service Entry Styles */
+        .service-entry {
+            background-color: white;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            border: 1px solid rgba(var(--color-primary), 0.1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            gap: var(--spacing-xs);
+        }
+
+        .btn-primary {
+            background-color: rgb(var(--color-primary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: rgba(var(--color-primary), 0.9);
+        }
+
+        .btn-secondary {
+            background-color: rgb(var(--color-gray));
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(var(--color-gray), 0.9);
+        }
+
+        .btn-danger {
+            background-color: rgb(var(--color-danger));
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: rgba(var(--color-danger), 0.9);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .stat-card {
+            background: linear-gradient(
+                135deg,
+                rgb(var(--color-primary)),
+                rgb(var(--color-secondary))
+            );
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            color: white;
+        }
+
+        .stat-title {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Transaction List Styles */
+        .transaction-list {
+            display: grid;
+            gap: var(--spacing-md);
+        }
+
+        .transaction-item {
+            background-color: white;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            border: 1px solid rgba(var(--color-primary), 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .transaction-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .transaction-customer {
+            font-weight: 600;
+            color: rgb(31, 41, 55);
+        }
+
+        .transaction-id {
+            font-size: 0.875rem;
+            color: rgb(var(--color-gray));
+        }
+
+        .transaction-details {
+            margin: var(--spacing-sm) 0;
+        }
+
+        .transaction-service {
+            font-size: 0.875rem;
+            color: rgb(55, 65, 81);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .transaction-total {
+            font-weight: 600;
+            color: rgb(var(--color-primary));
+            margin-top: var(--spacing-sm);
+        }
+
+        .transaction-actions {
+            margin-top: var(--spacing-md);
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        /* Loading States */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(var(--color-primary), 0.3);
+            border-radius: 50%;
+            border-top-color: rgb(var(--color-primary));
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 768px) {
+            /* Prevent iOS zoom */
+            input[type="text"],
+            input[type="number"],
+            input[type="email"],
+            input[type="tel"],
+            select,
+            textarea {
+                font-size: 16px !important;
+                line-height: 1.3;
+            }
+
+            .form-control {
+                height: 44px; /* Larger touch target */
+                padding: var(--spacing-md);
+            }
+
+            textarea.form-control {
+                height: auto;
+                min-height: 88px;
+            }
+
+            /* Improved grid layouts */
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+
+            /* Adjusted spacing */
+            .card {
+                padding: var(--spacing-md);
+                margin-bottom: var(--spacing-md);
+            }
+
+            .service-entry {
+                padding: var(--spacing-md);
+                margin-bottom: var(--spacing-md);
+            }
+
+            /* Better button handling */
+            .btn {
+                width: 100%;
+                height: 44px; /* Larger touch target */
+                margin-bottom: var(--spacing-xs);
+                padding: var(--spacing-sm) var(--spacing-md);
+                font-size: 16px;
+            }
+
+            .transaction-actions {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            /* Improved header for mobile */
+            .header {
+                padding: var(--spacing-sm) 0;
+            }
+
+            .site-title {
+                font-size: 1.5rem;
+            }
+
+            .site-subtitle {
+                font-size: 0.9rem;
+            }
+
+            /* Better form labels */
+            .form-label {
+                font-size: 0.9rem;
+                margin-bottom: var(--spacing-xs);
+            }
+
+            /* Improved spacing for service entries */
+            .service-entry .form-grid {
+                gap: var(--spacing-sm);
+            }
+
+            /* Better transaction items */
+            .transaction-item {
+                padding: var(--spacing-md);
+            }
+
+            .transaction-header {
+                flex-direction: column;
+                gap: var(--spacing-xs);
+            }
+
+            .transaction-customer {
+                font-size: 1.1rem;
+            }
+
+            .transaction-id {
+                font-size: 0.85rem;
+            }
+
+            .transaction-service {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+
+            /* Improved stats cards */
+            .stat-card {
+                padding: var(--spacing-md);
+            }
+
+            .stat-title {
+                font-size: 0.8rem;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Utility Classes */
+        .mb-1 { margin-bottom: var(--spacing-xs); }
+        .mb-2 { margin-bottom: var(--spacing-sm); }
+        .mb-3 { margin-bottom: var(--spacing-md); }
+        .mb-4 { margin-bottom: var(--spacing-lg); }
+        .mb-5 { margin-bottom: var(--spacing-xl); }
+
+        .mt-1 { margin-top: var(--spacing-xs); }
+        .mt-2 { margin-top: var(--spacing-sm); }
+        .mt-3 { margin-top: var(--spacing-md); }
+        .mt-4 { margin-top: var(--spacing-lg); }
+        .mt-5 { margin-top: var(--spacing-xl); }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="site-title">Beauté Infinï</h1>
+            <p class="site-subtitle">Transaction Management System</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- New Transaction Section -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">New Transaction</h2>
+            </div>
+            
+            <form id="transactionForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Customer Name</label>
+                        <input type="text" class="form-control" id="customerName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Payment Method</label>
+                        <select class="form-control" id="paymentMethod" required>
+                            <option value="Cash">Cash</option>
+                            <option value="GCash">GCash</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="serviceEntries">
+                    <!-- Service entries will be dynamically added here -->
+                </div>
+
+                <button type="button" class="btn btn-secondary mb-3" id="addServiceBtn">
+                    Add Service
+                </button>
+
+                <div class="form-group">
+                    <label class="form-label">Remarks</label>
+                    <textarea class="form-control" id="remarks" rows="3"></textarea>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Submit Transaction</button>
+                    <button type="button" class="btn btn-secondary" id="clearFormBtn">Clear Form</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 class="stat-title">Total Sales</h3>
+                <p class="stat-value" id="totalSales">₱0.00</p>
+            </div>
+            
+            <div class="stat-card">
+                <h3 class="stat-title">Cash Sales</h3>
+                <p class="stat-value" id="cashSales">₱0.00</p>
+            </div>
+            
+            <div class="stat-card">
+                <h3 class="stat-title">GCash Sales</h3>
+                <p class="stat-value" id="gcashSales">₱0.00</p>
+            </div>
+        </div>
+
+        <!-- Transactions List -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Today's Transactions</h2>
+            </div>
+            <div id="transactionList" class="transaction-list">
+                <!-- Transactions will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Frontend JavaScript -->
+    <script>
+        // Global variables
+        let services = [];
+        let staff = [];
+        let currentTransactionId = null;
+
+        // Cache DOM elements
+        const elements = {
+            form: document.getElementById('transactionForm'),
+            customerName: document.getElementById('customerName'),
+            paymentMethod: document.getElementById('paymentMethod'),
+            remarks: document.getElementById('remarks'),
+            serviceEntries: document.getElementById('serviceEntries'),
+            loadingOverlay: document.getElementById('loadingOverlay'),
+            transactionList: document.getElementById('transactionList'),
+            totalSales: document.getElementById('totalSales'),
+            cashSales: document.getElementById('cashSales'),
+            gcashSales: document.getElementById('gcashSales')
+        };
+
+        // Loading state management
+        const loadingState = {
+            show() {
+                elements.loadingOverlay.classList.add('active');
+            },
+            hide() {
+                elements.loadingOverlay.classList.remove('active');
+            }
+        };
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                loadingState.show();
+                
+                // Load services and staff data
+                const [servicesResult, staffResult] = await Promise.all([
+                    new Promise((resolve, reject) => {
+                        google.script.run
+                            .withSuccessHandler(resolve)
+                            .withFailureHandler(reject)
+                            .getServices();
+                    }),
+                    new Promise((resolve, reject) => {
+                        google.script.run
+                            .withSuccessHandler(resolve)
+                            .withFailureHandler(reject)
+                            .getStaff();
+                    })
+                ]);
+                
+                services = servicesResult;
+                staff = staffResult;
+                
+                setupEventListeners();
+                addServiceEntry();
+                await refreshTransactions();
+                await updateSalesOverview();
+                
+            } catch (error) {
+                showError('Error initializing application: ' + error.toString());
+            } finally {
+                loadingState.hide();
+            }
+        });
+
+        // Set up event listeners
+        function setupEventListeners() {
+            document.getElementById('addServiceBtn').addEventListener('click', addServiceEntry);
+            document.getElementById('clearFormBtn').addEventListener('click', clearForm);
+            elements.form.addEventListener('submit', handleSubmit);
+        }
+
+        // Add new service entry
+        function addServiceEntry() {
+            const uniqueId = Date.now();
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'service-entry';
+            
+            entryDiv.innerHTML = `
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Service</label>
+                        <select class="form-control service-select" id="service_${uniqueId}" required>
+                            <option value="">Select Service</option>
+                            ${services.map(service => 
+                                `<option value="${service.name}" data-price="${service.price}">
+                                    ${service.name} - ₱${service.price}
+                                </option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Price</label>
+                        <input type="number" class="form-control price-input" 
+                               id="price_${uniqueId}" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Staff</label>
+                        <select class="form-control staff-select" id="staff_${uniqueId}" required>
+                            <option value="">Select Staff</option>
+                            ${staff.map(name => 
+                                `<option value="${name}">${name}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-danger" onclick="removeServiceEntry(this)">
+                    Remove Service
+                </button>
+            `;
+            
+            elements.serviceEntries.appendChild(entryDiv);
+            
+            // Add event listener for service selection
+            const serviceSelect = entryDiv.querySelector('.service-select');
+            serviceSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const priceInput = entryDiv.querySelector('.price-input');
+                priceInput.value = selectedOption.dataset.price || '';
+            });
+        }
+
+        // Remove service entry
+        function removeServiceEntry(button) {
+            button.closest('.service-entry').remove();
+        }
+
+        // Handle form submission
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const submitButton = event.submitter;
+            submitButton.disabled = true;
+            
+            try {
+                loadingState.show();
+                
+                // Collect form data
+                const formData = {
+                    customerName: elements.customerName.value.trim(),
+                    services: Array.from(document.getElementsByClassName('service-entry')).map(entry => ({
+                        serviceName: entry.querySelector('.service-select').value,
+                        price: parseFloat(entry.querySelector('.price-input').value),
+                        staff: entry.querySelector('.staff-select').value
+                    })),
+                    paymentMethod: elements.paymentMethod.value,
+                    remarks: elements.remarks.value.trim()
+                };
+                
+                if (!validateFormData(formData)) {
+                    return;
+                }
+                
+                // Save transaction
+                const result = await new Promise((resolve, reject) => {
+                    if (currentTransactionId) {
+                        google.script.run
+                            .withSuccessHandler(resolve)
+                            .withFailureHandler(reject)
+                            .updateTransaction(currentTransactionId, formData);
+                    } else {
+                        google.script.run
+                            .withSuccessHandler(resolve)
+                            .withFailureHandler(reject)
+                            .saveTransaction(formData);
+                    }
+                });
+                
+                if (result.success) {
+                    clearForm();
+                    await refreshTransactions();
+                    await updateSalesOverview();
+                    showSuccess('Transaction processed successfully!');
+                } else {
+                    throw new Error(result.error);
+                }
+                
+            } catch (error) {
+                showError('Error processing transaction: ' + error.toString());
+            } finally {
+                submitButton.disabled = false;
+                loadingState.hide();
+            }
+        }
+
+        // Validate form data
+        function validateFormData(formData) {
+            if (!formData.customerName) {
+                showError('Please enter customer name');
+                return false;
+            }
+            
+            if (formData.services.length === 0) {
+                showError('Please add at least one service');
+                return false;
+            }
+            
+            for (const service of formData.services) {
+                if (!service.serviceName || !service.staff || !service.price) {
+                    showError('Please fill in all service details');
+                    return false;
+                }
+                
+                if (service.price <= 0) {
+                    showError('Price must be greater than 0');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Clear form
+        function clearForm() {
+            elements.form.reset();
+            elements.serviceEntries.innerHTML = '';
+            currentTransactionId = null;
+            addServiceEntry();
+        }
+
+        // Refresh transactions
+        async function refreshTransactions() {
+            elements.transactionList.innerHTML = '<div class="loading-spinner"></div>';
+            
+            try {
+                const transactions = await new Promise((resolve, reject) => {
+                    google.script.run
+                        .withSuccessHandler(resolve)
+                        .withFailureHandler(reject)
+                        .getTodayTransactions();
+                });
+                
+                if (!transactions || transactions.length === 0) {
+                    elements.transactionList.innerHTML = '<p>No transactions today</p>';
+                    return;
+                }
+                
+                elements.transactionList.innerHTML = transactions
+                    .map(transaction => createTransactionHTML(transaction))
+                    .join('');
+                
+            } catch (error) {
+                console.error('Error refreshing transactions:', error);
+                elements.transactionList.innerHTML = 
+                    '<p>Error loading transactions. Please try again.</p>';
+            }
+        }
+
+        // Create transaction HTML
+        function createTransactionHTML(transaction) {
+            return `
+                <div class="transaction-item">
+                    <div class="transaction-header">
+                        <div>
+                            <h3 class="transaction-customer">${transaction.customerName}</h3>
+                            <p class="transaction-id">Transaction ID: ${transaction.transactionId}</p>
+                        </div>
+                        <span class="badge">${transaction.paymentMethod}</span>
+                    </div>
+                    
+                    <div class="transaction-details">
+                        ${transaction.services.map(service => `
+                            <p class="transaction-service">
+                                ${service.serviceName} - ₱${service.price.toFixed(2)} 
+                                (${service.staff})
+                            </p>
+                        `).join('')}
+                        
+                        <p class="transaction-total">
+                            Total: ₱${transaction.total.toFixed(2)}
+                        </p>
+                    </div>
+                    
+                    <div class="transaction-actions">
+                        <button class="btn btn-primary" 
+                                onclick="editTransaction('${transaction.transactionId}')">
+                            Edit
+                        </button>
+                        <button class="btn btn-danger" 
+                                onclick="deleteTransaction('${transaction.transactionId}')">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Edit transaction
+        async function editTransaction(transactionId) {
+            try {
+                loadingState.show();
+                
+                const transactions = await new Promise((resolve, reject) => {
+                    google.script.run
+                        .withSuccessHandler(resolve)
+                        .withFailureHandler(reject)
+                        .getTodayTransactions();
+                });
+                
+                const transaction = transactions.find(t => t.transactionId === transactionId);
+                if (!transaction) {
+                    throw new Error('Transaction not found');
+                }
+                
+                clearForm();
+                currentTransactionId = transactionId;
+                
+                elements.customerName.value = transaction.customerName;
+                elements.paymentMethod.value = transaction.paymentMethod;
+                elements.remarks.value = transaction.remarks || '';
+                
+                elements.serviceEntries.innerHTML = '';
+                
+                transaction.services.forEach(service => {
+                    addServiceEntry();
+                    const lastEntry = document.querySelector('.service-entry:last-child');
+                    
+                    lastEntry.querySelector('.service-select').value = service.serviceName;
+                    lastEntry.querySelector('.price-input').value = service.price;
+                    lastEntry.querySelector('.staff-select').value = service.staff;
+                });
+                
+                document.querySelector('.card').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                showError('Error loading transaction: ' + error.toString());
+            } finally {
+                loadingState.hide();
+            }
+        }
+
+        // Delete transaction
+        async function deleteTransaction(transactionId) {
+            if (!confirm('Are you sure you want to delete this transaction?')) {
+                return;
+            }
+            
+            try {
+                loadingState.show();
+                
+                const result = await new Promise((resolve, reject) => {
+                    google.script.run
+                        .withSuccessHandler(resolve)
+                        .withFailureHandler(reject)
+                        .deleteTransaction(transactionId);
+                });
+                
+                if (result.success) {
+                    await refreshTransactions();
+                    await updateSalesOverview();
+                    showSuccess('Transaction deleted successfully!');
+                } else {
+                    throw new Error(result.error);
+                }
+                
+            } catch (error) {
+                showError('Error deleting transaction: ' + error.toString());
+            } finally {
+                loadingState.hide();
+            }
+        }
+
+        // Update sales overview
+        async function updateSalesOverview() {
+            try {
+                const overview = await new Promise((resolve, reject) => {
+                    google.script.run
+                        .withSuccessHandler(resolve)
+                        .withFailureHandler(reject)
+                        .getSalesOverview();
+                });
+                
+                elements.totalSales.textContent = `₱${overview.total.toFixed(2)}`;
+                elements.cashSales.textContent = `₱${overview.cash.toFixed(2)}`;
+                elements.gcashSales.textContent = `₱${overview.gcash.toFixed(2)}`;
+                
+            } catch (error) {
+                console.error('Error updating sales overview:', error);
+            }
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            alert(message); // Replace with a better notification system
+        }
+
+        // Show error message
+        function showError(message) {
+            alert('Error: ' + message); // Replace with a better notification system
+        }
+    </script>
+</body>
+</html>
